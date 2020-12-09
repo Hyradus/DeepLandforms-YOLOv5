@@ -1,0 +1,20 @@
+name: DL-pytorch-38
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - jupyterlab
+  - opencv
+  - libpython-static
+  - ipywidgets
+  - pandas
+  - scikit-learn
+  - nodejs
+  - spyder
+  - spyder-kernels=1.9.3
+  - pyproj
+  - affine
+  - rasterio
+  - geopandas
+  - matplotlib
