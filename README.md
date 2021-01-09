@@ -29,7 +29,8 @@ then create a dataset.yaml file containing:
 * names: ['label1','label2','...']
 
 ## Usage
-**TRAINING
+**TRAINING**
+
 ### Simple
 Prepare the dataset then run the training notebook as it is, it will ask for:
 - source folder
@@ -37,7 +38,8 @@ Prepare the dataset then run the training notebook as it is, it will ask for:
 ### Advanced
 Edit the training parameters dictionary according to your needs
 
-**INFERENCE
+**INFERENCE**
+
 ### Simple 
 Just run the inference notebook as it is, it will ask for:
 - weights folder
