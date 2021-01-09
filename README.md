@@ -1,7 +1,9 @@
 # DeepLandforms-YOLOv5
 
 This repository has been developed to provide a simplified YOLOv5 Object Detection workflow using georefernced images, from training to GIS mapping of results.
-YOLOv5 is developed by [ultralytics](https://github.com/ultralytics/yolov5) and has been modified to adapt to georeferenced images and GIS.
+YOLOv5 is developed by [ultralytics](https://github.com/ultralytics/yolov5)  and has been modified to adapt to georeferenced images and GIS.
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4418161.svg)](https://doi.org/10.5281/zenodo.4418161)
+
 
 ## Notebooks
 Two interactive notebooks:
@@ -29,7 +31,8 @@ then create a dataset.yaml file containing:
 * names: ['label1','label2','...']
 
 ## Usage
-**TRAINING
+**TRAINING**
+
 ### Simple
 Prepare the dataset then run the training notebook as it is, it will ask for:
 - source folder
@@ -37,7 +40,8 @@ Prepare the dataset then run the training notebook as it is, it will ask for:
 ### Advanced
 Edit the training parameters dictionary according to your needs
 
-**INFERENCE
+**INFERENCE**
+
 ### Simple 
 Just run the inference notebook as it is, it will ask for:
 - weights folder
