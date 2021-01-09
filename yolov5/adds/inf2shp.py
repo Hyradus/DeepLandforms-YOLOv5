@@ -10,13 +10,14 @@ Created on Fri Sep  4 22:44:43 2020
 @author: @author: Giacomo Nodjoumi g.nodjoumi@jacobs-unversity.de
 """
 
-import csv
 import pandas as pd
 import geopandas as gpd
 import pathlib
 from pyproj import CRS
 import shutil
-from adds.gen_utils import get_paths
+from adds.GenUtils import get_paths
+
+import rasterio as rio
 # CLON2 = pyproj.CRS.from_user_input('PROJCS["Equirectangular MARS",GEOGCS["GCS_MARS",DATUM["unnamed",SPHEROID["unnamed",3396190,0]],PRIMEM["Reference meridian",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Equirectangular"],PARAMETER["standard_parallel_1",0],PARAMETER["central_meridian",180],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH]]')
 # mars_sphere = CRS.from_proj4('+proj=longlat +R=3396190 +no_defs +type=crs')
 # marsUTM = CRS.from_proj4('+proj=tmerc +lat_0=0 +lon_0=0 +k=0.9996 +x_0=0 +y_0=0 +a=3396190 +b=3376200 +units=m +no_defs')
@@ -27,36 +28,30 @@ from adds.gen_utils import get_paths
 EQUI = CRS.from_user_input('PROJCS["Equirectangular MARS",GEOGCS["GCS_MARS",DATUM["unnamed",SPHEROID["unnamed",3396190,0]],PRIMEM["Reference meridian",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Equirectangular"],PARAMETER["standard_parallel_1",0],PARAMETER["central_meridian",180],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH]]')
 
 
-def get_world_file(types):
-    if 'tiff' or 'TIFF' in types:
+def get_world_file(ext):
+    if ext in ['TIFF','tiff']:
         ixt = 'tiff'
-        world_file = 'tfw'
-    elif 'PNG' or 'png' in types:
+        world_file = '.tfw'
+    if ext in ['PNG','png']:
         ixt = 'png'
-        world_file = 'pgw'
-    elif 'JPG' or 'jpg' in types:
+        world_file = '.pgw'
+    if ext in ['JPG','jpg']:
         ixt = ' jpg'
-        world_file = 'jgw'
+        world_file = '.jgw'    
     return(ixt, world_file)
 
-def inf2df(file, cols, world_file, ixt):
+
+def inf2df(source, file, cols, ixt):
     name= pathlib.Path(file).name.split('.')[0]    
-    pgw = name+'.'+world_file
     image = name + '.'+ixt
     usc = [x for x in range(len(cols))]
-    
     df = pd.read_csv(file, delimiter=' ', usecols=usc, names=cols, dtype='float64')
-    
     df.insert(0, 'Name', name)
-    
-    aff = getAffine(pgw)
-    import rasterio as rio
-    img = rio.open(image)
+    src_image = source+'/output/'+image
+    img = rio.open(src_image)
+    aff = img.transform
     width = img.width
-    height = img.height
-    
-    
-    
+    height = img.height    
     for i in range(df.shape[0]):
         pX=df['x'].iloc[i]
         pY=df['y'].iloc[i]
@@ -66,22 +61,11 @@ def inf2df(file, cols, world_file, ixt):
         coord=aff*(col,row)
         df.at[i,'long']=coord[0]
         df.at[i,'lat']=coord[1]
-
     return(df)
-
-
-def getTransform(file):
-    transforms = []
-    with open(file, 'r') as cf:
-        f = csv.reader(cf, delimiter=' ')
-        for row in f:
-            transforms.append(row)
-    return(transforms)
-        
-    
-def getAffine(pgw_file):
-    with open(pgw_file, 'r'):
-        t = [line.rstrip('\n') for line in open(pgw_file)]
+   
+def getAffine(world_file):
+    with open(world_file, 'r'):
+        t = [line.rstrip('\n') for line in open(world_file)]
         t = [float(i) for i in t]
         gt = (t[4],t[0],t[1],t[5],t[2],t[3])
     from affine import Affine
@@ -89,13 +73,17 @@ def getAffine(pgw_file):
     return(aff)
 
 
-def df_comb(detections, world_file, ixt):   
+def df_comb(detections, ixt, source):   
     columns = ['Name','Cls', 'Conf','x','y','w','h','long','lat']
     inf_df = pd.DataFrame(columns=columns)
     cols = ['Cls', 'Conf','x','y','w','h']
     for file in detections:
-        df = inf2df(file, cols, world_file, ixt)
-        inf_df =inf_df.append(df, ignore_index=True)
+        try:
+            df = inf2df(source, file, cols, ixt)
+            inf_df =inf_df.append(df, ignore_index=True)
+        except:
+            print(file, ' not found')
+            continue
     inf_df['Cls'] = inf_df['Cls']+1        
     return(inf_df)
 
