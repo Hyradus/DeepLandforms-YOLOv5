@@ -1,4 +1,6 @@
 # DeepLandforms-YOLOv5
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4430015.svg)](https://doi.org/10.5281/zenodo.4430015)
+
 
 This repository has been developed to provide a simplified YOLOv5 Object Detection workflow using georefernced images, from training to GIS mapping of results.
 YOLOv5 is developed by [ultralytics](https://github.com/ultralytics/yolov5)  and has been modified to adapt to georeferenced images and GIS.
