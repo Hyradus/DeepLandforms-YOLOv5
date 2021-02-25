@@ -6,6 +6,11 @@ This repository has been developed to provide a simplified YOLOv5 Object Detecti
 YOLOv5 is developed by [ultralytics](https://github.com/ultralytics/yolov5)  and has been modified to adapt to georeferenced images and GIS.
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4418161.svg)](https://doi.org/10.5281/zenodo.4418161)
 
+Abstract has been accepted and published at Lunar Planetary Scince Conference 2021 
+
+https://www.hou.usra.edu/meetings/lpsc2021/pdf/1316.pdf
+
+This study is within the Europlanet 2024 RI, and it has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 871149. Mars images were obtained from NASA PDS.
 
 ## Notebooks
 Two interactive notebooks:
