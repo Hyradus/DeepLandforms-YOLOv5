@@ -1,20 +1,15 @@
-name: DL-pytorch-38
+name: DL-pytorch-39
 channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.8
+  - python=3.9
   - jupyterlab
-  - opencv
-  - libpython-static
   - ipywidgets
   - pandas
   - scikit-learn
-  - nodejs
-  - spyder
-  - spyder-kernels=1.9.3
   - pyproj
   - affine
   - rasterio
   - geopandas
-  - matplotlib
+  - labelimg
